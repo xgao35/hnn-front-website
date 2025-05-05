@@ -15,6 +15,7 @@ body {
     transition: margin-left .5s;
     margin: 0px;
     padding: 0px;
+    min-width: var(--content-min-width);
 }
 
 h1, h2, h3, h4 {
@@ -23,7 +24,7 @@ h1, h2, h3, h4 {
 }
 
 a {
-    color: var(--hnn-violet);
+    color: var(--sidebar-purple);
 }
 
 a:hover {
@@ -103,7 +104,7 @@ a:hover {
 
 /* Inline code (single backtick) */
 code {
-    color: var(--hnn-violet);
+    color: var(--sidebar-purple);
     background-color: #f6f8fa;
     display: inline;
     padding: 0.2em 0.4em;
@@ -142,6 +143,7 @@ code {
     align-items: center;
     padding: 0 0px;
     width: 100%;
+    min-width: var(--content-min-width);
     flex-direction: column;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Subtle drop shadow */
     position: fixed;
@@ -155,7 +157,14 @@ code {
     justify-content: space-between; /* Push links to left and dropdown/socials to right */
     padding: 0 20px;
     width: 100%;
-    max-width: 1220px;
+    max-width: 95%;
+    min-width: var(--content-min-width);
+    box-sizing: border-box;
+}
+
+.links {
+    display: flex;
+    align-items: center;
 }
 
 /* Left links (Install, Tutorials, etc.) */
@@ -164,13 +173,58 @@ code {
     font-size: 18px;
     padding: 0px 10px;
     text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+
 }
 
 .links a:hover {
-    color: var(--hnn-violet);
+    color: var(--sidebar-purple);
+    /* transition: transform 0.3s ease;
+    transform: scale(1.05); */
     text-decoration: underline;
     text-underline-offset: 10px;
     text-decoration-thickness: 3px;
+}
+
+.home-link {
+    display: inline-flex;
+    text-decoration: none;
+    height: inherit;
+    padding: 0px;
+    align-items: center;
+}
+
+.home-icon-container {
+    height: inherit;
+    align-items: center;
+    position: relative;
+    display: inline-flex;
+    justify-content: center;
+
+}
+
+.home-icon {
+    fill: grey;
+    height: 22px;
+    width: auto;
+    transition: transform 0.3s ease;
+}
+
+.home-icon:hover {
+    /* transform: scale(1.05); */
+    fill: var(--sidebar-purple);
+}
+
+/* add underline to home icon */
+.home-icon-container:hover::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -9px; /* matches text-underline-offset: 10px */
+    height: 3px;
+    background-color: var(--sidebar-purple);
 }
 
 /* Right section for dropdown and social icons */
@@ -178,6 +232,8 @@ code {
     display: flex;
     align-items: center;
     gap: 15px; /* Space between dropdown and social icons */
+    margin-right: 10px;
+    padding-left: 30px;
 }
 
 /* Dropdown styles */
@@ -190,7 +246,6 @@ code {
     cursor: pointer;
     background: none;
     color: grey;
-    border: none;
 }
 
 .dropdown-button {
@@ -200,11 +255,18 @@ code {
     justify-content: center;
     cursor: pointer;
     padding: 0px 10px;
+    border: 3px solid #fff;
+}
+
+.dropdown-button:hover {
+    border: 3px solid var(--sidebar-purple);
+    border-radius: 6px;
 }
 
 .dropdown-text {
     display: inline-block;
     position: relative;
+    white-space: nowrap;
 }
 
 .caret {
@@ -220,24 +282,27 @@ code {
 }
 
 .dropdown-button:hover .caret {
-    border-color: var(--hnn-violet); 
+    border-color: var(--sidebar-purple); 
 }
 
+/* box shadow in case below simulates underline text decoration */
 .dropdown-button:hover .dropdown-text {
-    /* simulate underline text decoration */
-    color: var(--hnn-violet);
-    box-shadow: 0 3px 0 var(--hnn-violet);
+    color: var(--sidebar-purple);
+    /* box-shadow: 0 3px 0 var(--sidebar-purple); */
 }
 
 .dropdown-content {
     display: none;
     position: absolute;
     top: 125%;
-    right: 0; /* align dropdown content with button */
+    right: 0;
     background-color: #f9f9f9;
     width: auto;
-    box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.2);
+    border: 2px solid var(--lighter-gray);
+    border-radius: 6px;
+    box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.1);
     padding: 10px 20px;
+    white-space: nowrap; 
 }
 
 .dropdown-content a {
@@ -249,17 +314,18 @@ code {
 }
 
 .dropdown-content a:hover {
-    color: var(--hnn-violet);  
+    color: var(--sidebar-purple);  
     text-decoration: underline;
     text-underline-offset: 10px; 
     text-decoration-thickness: 3px;
-    transform: scale(1.02); /* zoom on hover */
+    transform: scale(1.02);
 }
 
 
-.dropdown:hover .dropdown-content {
+/* make more button show on hover /*
+/* .dropdown:hover .dropdown-content {
     display: block;
-}
+} */
 
 /* Social icons styles */
 .social-icons {
@@ -737,8 +803,83 @@ code {
 body.dark-mode .name-tooltip {
     background: #8d8d8d;
     color: #fff;
-    border: 2px solid var(--hnn-violet);
+    border: 2px solid var(--sidebar-purple);
 }
+
+/* 
+# --------------------
+# Mobile Menu 
+# -------------------- 
+*/
+
+/* Highlighted Additions */
+.hamburger {
+    display: none;
+    font-size: 32px;
+    cursor: pointer;
+    user-select: none;
+    color: grey;
+}
+
+.hamburger:hover {
+    color: var(--sidebar-purple);
+}
+
+.mobile-menu {
+    display: none;
+    background-color: white;
+    border: 2px solid var(--lighter-gray);
+    border-radius: 10px;
+    box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.1);
+    padding: 10px 20px;
+    position: fixed;
+    top: 60px !important; /* below the topbar */
+    left: 30px;
+    width: auto;
+    z-index: 9998;
+}
+
+.mobile-menu .links {
+    display: flex;
+    line-height: 2;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    
+}
+
+.mobile-menu.show {
+    display: flex;
+}
+
+/* Keep social icons visible in mobile view */
+.mobile-menu .social-icons {
+    display: block;
+}
+
+.hamburger.menu-open { 
+    color: var(--sidebar-purple);
+}
+
+/* Responsive toggle */
+@media screen and (max-width: 750px) {
+    .topbar-right .dropdown,
+
+    #topbar-wrapper > .links {
+        display: none;
+    }
+
+    .hamburger {
+        display: block;
+    }
+
+   /* re-enable links inside the mobile menu */
+   #mobile-menu .links {
+       display: flex;
+       flex-direction: column;
+   }
+}
+
 
 /* 
 # --------------------
@@ -746,10 +887,10 @@ body.dark-mode .name-tooltip {
 # -------------------- 
 */
 
-@media screen and (max-height: 450px) {
+/* @media screen and (max-height: 450px) {
     .sidebar {padding-top: 15px;}
     .sidebar a {font-size: 18px;}
-}
+} */
 
 /* 
 # --------------------
@@ -759,6 +900,7 @@ body.dark-mode .name-tooltip {
 
 :root {
     --content-max-width: 920px;
+    --content-min-width: 650px;
 }
 
 /* Custom HNN colors */
@@ -773,4 +915,56 @@ body.dark-mode .name-tooltip {
     --hnn-purple: #474095;
     --hnn-violet: #812A89;
     --hnn-yellow: #e5a734;
+    --light-purple: #ba83be;
+    --light-gray: #d3d3d3;
+    --gentle-red: #ff7777;
+    --text-light: #333; 
+    --icon-base: #bababa;
+    --icon-hover: #444;
+    --sidebar-purple: #88548c;
+    --sidebar-gray: #313438;
+    --content-gray: #14181e;
+    --tooltip-gray: #555;
+    --lighter-gray: #e1e4e8;
+}
+
+/* 
+# --------------------
+# In Development 
+# -------------------- 
+*/
+
+/*
+
+# Notes
+- Adding <span class="external-icon"></span> to the links in the .dropdown section currently works as intended. However, the icons cause text-shift in the .links section. I need to tease this apart before we use this more broadly in topbar. 
+
+*/
+
+:root {
+    --pst-font-size-icon: .9rem;
+    --pst-icon-external-link: "\f35d"; /* fa-solid fa-up-right-from-square */
+}
+
+/* .external-link {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    border-bottom: 3px solid transparent;
+    vertical-align: bottom; 
+} */
+
+/* .external-link:hover {
+    color: var(--sidebar-purple);
+    border-bottom: 3px solid var(--sidebar-purple);
+} */
+
+.external-icon {
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    font-size: var(--pst-font-size-icon);
+}
+
+.external-icon::before {
+    content: var(--pst-icon-external-link);
 }
